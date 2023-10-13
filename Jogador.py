@@ -1,7 +1,11 @@
 from abc import ABC, abstractmethod
-
+class ErrorSeed(Exception):
+    def __init__(self, msg):
+        self.msg = msg
 class Jogador(ABC):
     def __init__(self, nome, cpf, saldo):
+        if len(cpf) != 11:
+            raise ErrorSeed(f" {nome} ESTá COM CPF INVALIDO")
         self.nome = nome
         self.cpf = cpf
         self.saldo = saldo
@@ -47,23 +51,9 @@ class Jogador(ABC):
     def Cartas(self, cartas):
         self.cartas = cartas
 
-
     def adicionarCarta(self, carta):
         self.cartas.append(carta)
 
 
     def __str__(self):
         return f"Nome: {self.nome}\nCPF: {self.cpf}\nSaldo: {self.saldo}\nCartas: {', '.join(self.cartas)}"
-
-class JogadorBlackjack(Jogador):
-    def fazerJogada(self):
-        pass
-
-    def atribuirCarta(self, carta):  
-        pass
-      
-#exemplo de teste:
-jogador1 = JogadorBlackjack("Alice", "1234567890", 1000)
-jogador1.adicionarCarta("Ás de Espadas")
-jogador1.adicionarCarta("Rei de Copas")
-print(jogador1)

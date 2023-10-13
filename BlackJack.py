@@ -1,4 +1,10 @@
-from TG1.Jogador import Jogador
+from Jogador import Jogador
+import cartas 
+
+
+class ErrorSeed(Exception):
+    def __init__(self, msg):
+        self.msg = msg
 
 
 class JogadorBlackjack(Jogador):
@@ -9,20 +15,34 @@ class JogadorBlackjack(Jogador):
         #if self.saldo == 0:
         pass
     def atribuirCarta(self, carta):  
+        
         pass
  
 
 activePlayers = []
-with open ("jogo.txt, r") as file:
-        for count in enumerate(file): #descobre quantas linhas tem
-            pass
-        filelen = count #precisariamos usar +1, mas estamos descontando a primeira linha
-        partes = file.strip("--")
-        for i in range(1,filelen):
-            jogador = JogadorBlackjack(partes[0],partes[1],partes[2])
+jogadores = []
+with open("jogo.txt","r") as file:
+        #Aqui lemos o arquivo, e obtemos as infos sobre o jogo e sobre os jogadores que 
+        #jogarão a partida 
+        line = file.readline().split("--") 
+        nomeJogo,NumeroJogadores,NumerosBaralhos,seed,rodadas = str(line[0]) , int(line[1]), int(line[2]), int(line[3]), int(line[4]) 
+        #Nesta linha fazemos os casts
+        if nomeJogo != "Blackjack":
+            raise ErrorSeed("Não é este o jogo")
+        lines = file.readlines() #ponteiro está na segunda linha já. Entao nao precisamos nos preocupar como que for lido 
+    
 
-            
-jogador1 = JogadorBlackjack("Alice", "1234567890", 1000)
-jogador1.adicionarCarta("Ás de Espadas")
-jogador1.adicionarCarta("Rei de Copas")
-print(jogador1)
+        for line in lines:
+            line = line.split("--")
+            nome,cpf,saldo,condParada = str(line[0]) , str(line[1]), int(line[2]), int(line[3]) #cast 
+            jogador = JogadorBlackjack(nome,cpf,saldo,condParada)
+            jogadores.append(jogador)
+
+
+
+for player in jogadores:
+     if (player.saldo > 0): # teste se tem saldo para jogar
+        activePlayers.append(player)
+for player in activePlayers:
+    print(player)
+
