@@ -4,11 +4,9 @@ import os
 class ErrorSeed(Exception):
     def __init__(self, msg):
         self.msg = msg
-
 class Deck:
     def __init__(self, num_decks=1):
         self.num_decks = num_decks
-        self.cartas_disponiveis = self.baralhos()
         self.seed = None
         self.cards = self.baralhos()
         if num_decks > 6:
@@ -73,34 +71,3 @@ class Deck:
         return baralho
     def get_deck_value(self, string) ->int : 
         pass
-    
-    #def get_deck_value(self, string) ->int : 
-    #    valores = [2,3,4,5,6,7,8,9,10,10,10,11]
-    #    result = string.split("de")[0].strip()
-    #    #print(result)
-    #    if (result == "Valete") or  (result == "Dama") or (result == "Rei"):
-    #        return 10
-    #    elif (result == "As"):
-    #        return 11
-    #    else:
-    #        return int(result) 
-
-        
-# Exemplo de uso:
-if __name__ == "__main__":
-    deck = Deck(num_decks=1)  # Criar um deck com dois baralhos
-    deck.embaralhar(seed=101)     # Embaralhar o deck com semente 42
-    deck.save_to_file("baralho.txt")  # Salvar o deck em um arquivo
-
-    # Carregar o deck de um arquivo
-    #deck.load_from_file("baralho.txt")
-
-    # Imprimir o deck carregado
-    deck.print_deck()
-    tamanho_decks = deck.get_deck_size()
-    print("tamanho do baralho é: ", tamanho_decks)
-    print();print() ;print()     
-    #val = deck.get_deck_value("9 de copas")
-    #print(val)
-    
-    
