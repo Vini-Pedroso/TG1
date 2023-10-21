@@ -54,16 +54,3 @@ class Jogador(ABC):
 
     def __str__(self):
         return f"Nome: {self.nome}\nCPF: {self.cpf}\nSaldo: {self.saldo}\nCartas: {', '.join(self.cartas)}"
-
-class JogadorBlackjack(Jogador):
-    def fazerJogada(self):
-        pass
-
-    def atribuirCarta(self, carta):  
-        pass
-      
-#exemplo de teste:
-jogador1 = JogadorBlackjack("Alice", "1234567890", 1000)
-jogador1.adicionarCarta("Ás de Espadas")
-jogador1.adicionarCarta("Rei de Copas")
-print(jogador1)
