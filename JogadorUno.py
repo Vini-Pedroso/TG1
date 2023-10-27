@@ -62,8 +62,6 @@ class JogadorUno(Jogador):
         try:
             self.cartas_mao.append(carta)
         except BaralhoVazioException:
-            # Tratar a exceção e encerrar o jogo, se necessário
-            # Você pode definir a lógica apropriada para encerrar o jogo quando o baralho estiver vazio
             self.encerrarJogo()
 
 
@@ -71,7 +69,6 @@ class JogadorUno(Jogador):
         jogadas_validas = [carta for carta in self.cartas_mao if carta['naipe'] == carta_mesa['naipe'] or carta['valor'] == carta_mesa['valor']]
 
         if len(jogadas_validas) > 0:
-            # O jogador tem pelo menos uma jogada válida
             carta = jogadas_validas[0]
             self.cartas_mao.remove(carta)
             if not self.cartas_mao:

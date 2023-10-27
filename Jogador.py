@@ -47,10 +47,12 @@ class Jogador(ABC):
     def Cartas(self, cartas):
         self.cartas = cartas
 
-
-    def adicionarCarta(self, carta):
-        self.cartas.append(carta)
-
-
     def __str__(self):
         return f"Nome: {self.nome}\nCPF: {self.cpf}\nSaldo: {self.saldo}\nCartas: {', '.join(self.cartas)}"
+
+class ExemploJogador(Jogador):
+    def fazerJogada(self):
+        print(f"{self.nome} está fazendo uma jogada.")
+
+    def atribuirCarta(self, carta):
+        print(f"{self.nome} recebeu a carta: {carta}")

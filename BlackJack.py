@@ -16,9 +16,9 @@ class ErrorCPF(Exception):
 def inicia_BlackJack_jogo(arquivo):
     nomeArquivo,_ = arquivo.split(".")
     _,numArquivo = nomeArquivo.split("_")
-    #print(numArquivo)
+    
     arquivosaida = f"saidas/jogo_{numArquivo}.saida" 
-    #print(arquivosaida)
+    
     class JogadorBlackjack(Jogador):
         def __init__(self, nome, cpf, saldo, condParada):
             super().__init__(nome, cpf, saldo)
@@ -105,7 +105,7 @@ def inicia_BlackJack_jogo(arquivo):
                
     def get_deck_value(carta) ->int : 
             result = carta['valor']
-            #print(result)
+            
             if (result == "Valete") or  (result == "Dama") or (result == "Rei"):
                 return 10
             elif (result == "As"):
@@ -163,7 +163,6 @@ def inicia_BlackJack_jogo(arquivo):
     deck.save_to_file("baralho.txt") #cria, embaralha e salva o deck
 
     escreve_no_arquivo(f"Começando jogo {numArquivo}\n")
-    print(f" jogo {numArquivo}")
     #começa o jogo 
     
     condParada = False #flag para ficar tentando distribuir cartas 
@@ -177,7 +176,6 @@ def inicia_BlackJack_jogo(arquivo):
             player.reseta_cartas()   #reseta tudo 
             player.reseta_parou()
         if len(activePlayers) == 0:
-            print("Não existem mais jogadores para jogar")
             escreve_no_arquivo("Não existem mais jogadores para jogar\n Encerrando jogo.")
             break
         for player in activePlayers:
@@ -189,12 +187,7 @@ def inicia_BlackJack_jogo(arquivo):
                         player.fazerJogada()              #faz a jogada, nela testa novamente se vai parar 
                 dealer.fazerJogada()
             
-            #if player.saldo <=0:    #ficou sem saldo 
-            #    activePlayers.remove(player)
-            #    print(f"Jogador {player.nome} saiu do jogo pois não tinha saldo")
-            #    escreve_no_arquivo(f"Jogador {player.nome} saiu do jogo pois não tinha saldo\n\n")
-        print(f"Rodada {i}")
-        print()
+            
         escreve_no_arquivo(f"Rodada {i}:\n")
         
         
@@ -207,30 +200,22 @@ def inicia_BlackJack_jogo(arquivo):
                 player.vitoria()
 
             elif player.get_somatorio() > 21:
-                print(str(player.nome) + " perdeu(estourou)\n\n")
                 player.derrota()
     
             elif player.get_somatorio() > dealer.get_somatorio():
                 player.vitoria()
-                print(f"{player.nome} ganhou pois tinha mais pontos que o delaer\n")
             
             elif player.get_somatorio() == dealer.get_somatorio():
-                print(str(player.nome) + " empatou\n\n")
                 pass
             elif player.get_somatorio() < dealer.get_somatorio():
-                print(str(player.nome) + "perdeu(menos que o delaer) \n")
                 player.derrota()
-            #print(player)
             escreve_no_arquivo(str(player)+ "\n\n")
         players_to_remove = []  # Crie uma lista para armazenar jogadores a serem removidos
 
         for player in activePlayers:
-            print(str(player.nome) + "\n\n")
-            print(str(player.saldo) + "\n\n")
             if player.saldo <= 0:
                 # Ficou sem saldo
                 escreve_no_arquivo(f"Jogador {player.nome} saiu do jogo pois não tinha saldo\n\n")
-                print(f"Jogador {player.nome} saiu do jogo pois não tinha saldo\n\n")
                 
                 players_to_remove.append(player)  # Adicione o jogador à lista de jogadores a serem removidos
 

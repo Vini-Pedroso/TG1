@@ -1,0 +1,17 @@
+﻿Relato:
+Nomes: Gabriel Mattos e Vinícius Pedroso
+
+Na construção deste trabalho adquirimos um amplo conhecimento em programação orientada a objetos, ao decorrer do trabalho obtivemos alguns obstáculos, irei discorrer sobre abaixo.
+ 
+Quando o projeto se iniciou conseguimos criar a classe jogador abstrato e a classe deck com grande facilidade, após isto, dividimos o trabalho em partes, Gabriel foi o responsável pelo Blackjack e Vinícius pelo Uno, mesmo o trabalho sendo dividido em partes continuamos a manipular os dois códigos juntos afim de aprimorar nossas habilidades e obviamente ajudar a debugar o código do colega com agilidade. Na classe de jogadores de cada classe aprendemos a utilizar a sobrecarga de operador, método bastante interessante para comparações de objetos, aprendemos com o decorrer do trabalho a pratica de leitura de arquivos mesclado com código, o que definitivamente é algo importante para a indústria que estamos entrando.
+	
+	Utilizamos também list-comprehension, técnica que facilita a escrita de códigos python e deixa o código mais sucinto. Outro ponto a se analisar foi a utilização de tratamento de erros, utilizamos com frequência no trabalho e foram de imensa importância para o andamento do projeto.
+	
+	Um problema que tivemos na classe uno foi uma confusão em relação a onde por o código de inicializar as cartas do jogador, pois cada jogador recebia 5 cartas no inicio do jogo, e a mesa recebia uma carta, no final optamos pela técnica de criar uma função chamada initalialize_game que, nada mais é, que uma função que inicia o jogo, inicialmente foi difícil enxergar a linha que o código iria seguir, no inicio acreditamos que seriam varias classes com interdependência com inputs de escolha de carta, etc. quando foi entregue os jogos.txt ficamos meio confusos pensando, como podemos ler isso? Este foi com certeza um ótimo aprendizado que levaremos com este trabalho.
+	A seed foi algo novo para nós, utilizamos uma técnica de inicializar a seed sendo = None para que os arquivos informassem qual seed seria utilizada no arquivo com o fim de não sobrescrever a seed e dar algum bug.
+
+	O app foi difícil de concluir, porém conseguimos, estávamos sobrescrevendo e alterando o saldo no jogador uno algumas vezes, o que ocasionava em bugs indesejados.
+Por fim, o código está com funcionamento ativo. Este trabalho foi uma ótima experiencia de aprendizado.
+
+	Ademais, salientou-se a experiência, que para ambos foi nova pois ainda não atuamos na area, de trabalhar e versionar o código na prática, fungindo do platô dos exercícios de git que foram passados. As compatibilidades entre as versões eram algo que, durante todo o processo,  deixou a dupla com receio e fê-la repensar no estado do código a ser commitado, para evitar futuros problemas.
+	Falando especificamente sobre o Blackjack, acredito que o principal desafio foi estruturar os metódos acertivamente e conseguir realmente entender em que momento deveriamos passar quais condições de vitória, como também criar a lógica de fazer as rodadas de distribuição de código. Para quem não conhecia nada sobre o jogo, foi uma ótima, e estressante, maneira de aprender e aplicar algo do zero. 

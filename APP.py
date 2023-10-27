@@ -22,15 +22,9 @@ def main():
                 if game_name == "Blackjack":
                     game = load_and_play_Blackjack_game(arquivo)
                 elif game_name == "Uno":
-                    print("Aqui")
-                    print(game_name)
                     game = load_and_play_uno_game(arquivo)                
                     game.start_game()
-                
-                #else:print("Jogo irreconhecivel")
-                
-                  
-                
+                            
             except Exception as e:
                 print(f"Erro ao iniciar o jogo {game_number}: {str(e)}")
         else:
@@ -47,7 +41,6 @@ def get_winner_from_output(output_filename):
     return winner
 
 def load_and_play_uno_game(arquivo):
-    print(arquivo)
     with open(arquivo, "r") as file:
         game_info = file.readline().strip().split("--")
         
@@ -56,31 +49,18 @@ def load_and_play_uno_game(arquivo):
         if game_name == 'Uno':
 
             num_players, num_decks, seed, rounds = game_info[1:]
-            #print(game_info)
             players_info = [line.strip() for line in file.readlines()[1:]]
-            print(players_info[0])
             num_players = int(num_players)
             num_decks = int(num_decks)
             seed = int(seed)
             rounds = int(rounds)
             players = []
-            print("aqui")
             _ , game_number = arquivo.split("_")
             game_number,_ = game_number.split(".")
-            print(game_number)
             for player_info in players_info:
-                print(player_info)
                 nome, cpf = player_info.strip().split("--")
                 jogador = JogadorUno( nome, cpf, 0, game_number)
                 players.append(jogador)
-                print(jogador)
-            print(num_players)
-            print(num_decks)
-            print(seed)
-            print(rounds)
-            print()
-            print(game_number)
-            print(arquivo)
             uno_game = Uno(arquivo,num_players, num_decks, seed, rounds, game_number)
             
             
@@ -88,16 +68,14 @@ def load_and_play_uno_game(arquivo):
 
             # Obtenha o vencedor usando o método get_winner
             winner = uno_game.get_winner()
-            print(f"Vencedor: {winner}")
+
             return uno_game
 def load_and_play_Blackjack_game(arquivo):
 
     with open(arquivo, "r") as file:
         game_info = file.readline().strip().split("--")
         game_name = game_info[0]
-        print(game_name)
     if game_name == 'Blackjack':
         BlackJack.inicia_BlackJack_jogo(arquivo)
 if __name__ == "__main__":
     main()
-

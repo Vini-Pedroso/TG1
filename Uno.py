@@ -29,8 +29,6 @@ class Uno:
         
         self.num_players = num_players
         self.activePlayers = self.load_players(arquivo)
-        print(self.activePlayers)
-        print("AQUIIIIII")
         self.current_player = 0
         self.seed = seed
         self.current_card = None
@@ -74,29 +72,15 @@ class Uno:
         
         with open(arquivo, 'r') as file:
             lines = file.read().splitlines()
-            #for line in lines[1:]:
-            #    # Separe a linha em nome e cpf
-            #    parts = line.split('--')
-            #    nome, cpf = parts[0], parts[1]
-            #    # Defina o saldo como None por padrão
-            #    saldo = None
-            #    if len(parts) > 2:
-            #        saldo = int(parts[2])  # Se houver um terceiro valor, use-o como saldo
             game_info = file.readline().strip().split("--")
-
-            #print(game_info)
             players_info = [line.strip() for line in lines[1:]]
             _ , game_number = arquivo.split("_")
             game_number,_ = game_number.split(".")
-            print(game_number)
-            print(f"ESTAMOS AQUI{players_info}")
             for player_info in players_info:
                 print(player_info)
                 nome, cpf = player_info.strip().split("--")
                 jogador = JogadorUno( nome, cpf, 0, game_number)
-                players.append(jogador)
-                print("AQUIKKKKKKK")
-                print(jogador)    
+                players.append(jogador) 
             
 
         return players
@@ -133,7 +117,6 @@ class Uno:
                 self.log_error(f"Erro não tratado: {str(e)}")
 
         if not winner:
-            # Encontre o jogador com menos cartas na mão
             winner = min(self.activePlayers, key=lambda player: len(player.cartas_mao))
             self.report_winner(winner)
 
@@ -148,11 +131,9 @@ class Uno:
 
 
     def display_current_card(self):
-        print("ESTAMOS AQUIKKKKKKKK")
         with open(self.output_filename, 'a+') as file:
             file.write(f"Carta atual: {self.current_card['valor']} de {self.current_card['naipe']}\n")
-        print(f"Carta atual: {self.current_card['valor']} de {self.current_card['naipe']}")
-
+        
     def carta_mesa_atual(self, card):
         print(f"Carta atual na mesa: {card['valor']} de {card['naipe']}")
 
@@ -177,14 +158,11 @@ class Uno:
                     raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
         except ErrorExitCondition as e:
             self.log_error(str(e))
-            # Atribua 16 ou realize a ação apropriada
 
         except ErrorInvalidBalance as e:
             self.log_error(str(e))
-            # Atribua 1 ou realize a ação apropriada
 
         except Exception as e:
-            # Outra exceção não tratada - registre o erro e continue
             self.log_error(f"Erro não tratado: {str(e)}")
 
         return carta_mesa
@@ -206,8 +184,7 @@ class Uno:
     def report_round_start(self, round_number):
         with open(self.output_filename, 'a+') as file:
             file.write(f'Começando Rodada {round_number}\n')
-
-
+            
     def display_player_hand(self, player):
         with open(self.output_filename, 'a+') as file:
             file.write(f"Cartas de {player.nome}:\n")
