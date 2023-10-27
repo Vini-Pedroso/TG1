@@ -1,8 +1,8 @@
 # Classe Uno atualizada
 import random
-from jogador import Jogador
-from cartas import Deck
-from jogadorUno import JogadorUno
+from Jogador import Jogador
+from Cartas import Deck
+from JogadorUno import JogadorUno
 
 class ErrorCPF(Exception):
     def __init__(self, msg):
@@ -24,16 +24,20 @@ class ErrorEmptyDeck(Exception):
         super().__init__(self.msg)
 
 class Uno:
-    def __init__(self, num_players, num_decks, seed, rounds, game_number):
+    def __init__(self, arquivo,num_players, num_decks, seed, rounds, game_number):
+        self.arquivo = arquivo
+        
         self.num_players = num_players
-        self.activePlayers = self.load_players(game_number)
+        self.activePlayers = self.load_players(arquivo)
+        print(self.activePlayers)
+        print("AQUIIIIII")
         self.current_player = 0
         self.seed = seed
         self.current_card = None
         self.rounds = rounds
         self.game_number = game_number
-        self.output_filename = f'jogo_{game_number}.saida'
-        self.log_filename = f'jogo_{game_number}.log'
+        self.output_filename = f'saidas/jogo_{game_number}.saida'
+        self.log_filename = f'saidas/jogo_{game_number}.log'
         self.init_output_file()
 
         if isinstance(num_decks, int) and num_decks > 0:
@@ -64,21 +68,36 @@ class Uno:
                     self.log_error("Baralho vazio - Encerrando jogo atual")
                     break  
 
-    def load_players(self, game_number):
+    def load_players(self, arquivo):
         players = []
         player_info = []
-
-        with open(f'jogo_{game_number}.txt', 'r') as file:
+        
+        with open(arquivo, 'r') as file:
             lines = file.read().splitlines()
-            for line in lines[1:]:
-                # Separe a linha em nome e cpf
-                parts = line.split('--')
-                nome, cpf = parts[0], parts[1]
-                # Defina o saldo como None por padrão
-                saldo = None
-                if len(parts) > 2:
-                    saldo = int(parts[2])  # Se houver um terceiro valor, use-o como saldo
-                players.append(JogadorUno(nome, cpf, game_number, saldo))
+            #for line in lines[1:]:
+            #    # Separe a linha em nome e cpf
+            #    parts = line.split('--')
+            #    nome, cpf = parts[0], parts[1]
+            #    # Defina o saldo como None por padrão
+            #    saldo = None
+            #    if len(parts) > 2:
+            #        saldo = int(parts[2])  # Se houver um terceiro valor, use-o como saldo
+            game_info = file.readline().strip().split("--")
+
+            #print(game_info)
+            players_info = [line.strip() for line in lines[1:]]
+            _ , game_number = arquivo.split("_")
+            game_number,_ = game_number.split(".")
+            print(game_number)
+            print(f"ESTAMOS AQUI{players_info}")
+            for player_info in players_info:
+                print(player_info)
+                nome, cpf = player_info.strip().split("--")
+                jogador = JogadorUno( nome, cpf, 0, game_number)
+                players.append(jogador)
+                print("AQUIKKKKKKK")
+                print(jogador)    
+            
 
         return players
 
@@ -86,7 +105,7 @@ class Uno:
         self.initialize_game()
         winner = None
 
-        with open(self.output_filename, 'a') as file:
+        with open(self.output_filename, 'a+') as file:
             file.write(f"Começando jogo {self.game_number}\n")
 
         for round_number in range(self.rounds):
@@ -94,6 +113,7 @@ class Uno:
             self.seed += 1
             self.deck.embaralhar(self.seed)
             try:
+                print(self.activePlayers)
                 for player in self.activePlayers:
                     self.display_current_card()
                     self.display_player_hand(player)
@@ -119,16 +139,17 @@ class Uno:
 
 
     def report_winner(self, player):
-        with open(self.output_filename, "a") as file:
+        with open(self.output_filename, "a+") as file:
             file.write(f"Vencedor: Jogador: {player.nome} CPF: {player.cpf} Número cartas: {len(player.cartas_mao)}\n")
 
     def report_draw(self):
-        with open(self.output_filename, 'a') as file:
+        with open(self.output_filename, 'a+') as file:
             file.write("Empate! Nenhum jogador possui mais cartas.\n")
 
 
     def display_current_card(self):
-        with open(self.output_filename, 'a') as file:
+        print("ESTAMOS AQUIKKKKKKKK")
+        with open(self.output_filename, 'a+') as file:
             file.write(f"Carta atual: {self.current_card['valor']} de {self.current_card['naipe']}\n")
         print(f"Carta atual: {self.current_card['valor']} de {self.current_card['naipe']}")
 
@@ -172,7 +193,7 @@ class Uno:
         pass
 
     def log_error(self, error_message):
-        with open(self.log_filename, 'a') as file:
+        with open(self.log_filename, 'a+') as file:
             file.write(f'ERRO: {error_message}\n')
 
     def get_winner(self):
@@ -183,12 +204,12 @@ class Uno:
         len(player.cartas_mao) == 0
 
     def report_round_start(self, round_number):
-        with open(self.output_filename, 'a') as file:
+        with open(self.output_filename, 'a+') as file:
             file.write(f'Começando Rodada {round_number}\n')
 
 
     def display_player_hand(self, player):
-        with open(self.output_filename, 'a') as file:
+        with open(self.output_filename, 'a+') as file:
             file.write(f"Cartas de {player.nome}:\n")
             for i, card in enumerate(player.cartas_mao):
                 file.write(f"{i}: {card['valor']} de {card['naipe']}\n")
