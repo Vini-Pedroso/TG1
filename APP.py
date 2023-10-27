@@ -64,9 +64,9 @@ def load_and_play_uno_game(arquivo):
             uno_game = Uno(arquivo,num_players, num_decks, seed, rounds, game_number)
             
             
-            uno_game.start_game()
+            #uno_game.start_game()
 
-            # Obtenha o vencedor usando o método get_winner
+        
             winner = uno_game.get_winner()
 
             return uno_game
