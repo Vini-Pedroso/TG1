@@ -1,6 +1,7 @@
 import random
 from Jogador import Jogador
 from Cartas import Deck
+import os
 
 
 class ErrorCPF(Exception):
@@ -20,7 +21,8 @@ class JogadorUno(Jogador):
         self.game_number = game_number
         self.output_filename = f'saidas/jogo_{self.game_number}.saida'
         self.log_filename = f'saidas/jogo_{self.game_number}.log'
-        self.init_output_file()  # Inicialize o arquivo de saída
+        #self.init_output_file() #EM TEORIA AQUI TA DUPLICANDO
+        
 
     def __gt__(self, other):
         return len(self.cartas_mao) > len(other.cartas_mao)
@@ -42,21 +44,18 @@ class JogadorUno(Jogador):
     
 
     def init_output_file(self):
-        with open(self.output_filename, 'a+') as file:
-            file.write(f'Comecando jogo {self.game_number}\n')
-          
+        if not os.path.exists(self.output_filename):
+            with open(self.output_filename, 'w') as file:
+                file.write(f'Comecando o jogo: {self.game_number}\n')
+
+
     def log_error(self, error_message):
         with open(self.log_filename, 'a+') as file:
             file.write(f'ERRO: {error_message}\n')
 
     def report_round_start(self, round_number):
         with open(self.output_filename, 'a+') as file:
-            file.write(f'Comecando Rodada {round_number}\n')
-
-    def report_winner(self, winner):
-        with open(self.output_filename, 'a+') as file:
-            file.write(f'Vencedor: Jogador: {winner.nome} CPF: {winner.cpf} '
-                       f'Numero cartas: {len(winner.cartas_mao)}\n')
+            file.write(f'Comecando Rodada {round_number}\n') #possivel erro
 
     def atribuirCarta(self, carta):
         try:
