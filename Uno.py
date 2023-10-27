@@ -18,8 +18,13 @@ class ErrorInvalidBalance(Exception):
         self.msg = msg
         super().__init__(self.msg)
 
+class ErrorNone(Exception):
+    def __init__(self, msg="Winner nao existe ainda"):
+        self.msg = msg
+        super().__init__(self.msg)
+
 class ErrorEmptyDeck(Exception):
-    def __init__(self, msg="Baralho vazio"):
+    def __init__(self, msg):
         self.msg = msg
         super().__init__(self.msg)
 
@@ -63,8 +68,8 @@ class Uno:
                     player.cartas_mao.append(carta)
                     player.deck = self.deck
                 else:
-                    self.log_error("Baralho vazio - Encerrando jogo atual")
-                    break  
+                    raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
+                    
 
     def load_players(self, arquivo):
         players = []
@@ -88,10 +93,6 @@ class Uno:
     def start_game(self):
         self.initialize_game()
         winner = None
-
-        with open(self.output_filename, 'a+') as file:
-            file.write(f"Começando jogo {self.game_number}\n")
-
         for round_number in range(self.rounds):
             self.report_round_start(round_number + 1)
             self.seed += 1
@@ -107,14 +108,10 @@ class Uno:
                     self.current_card = self.play_turn(player, self.current_card)
                 if winner:
                     self.report_winner(winner)
-
-            except ErrorExitCondition as e:
+            
+            except ErrorNone as e:
                 self.log_error(str(e))
-                break
-            except ErrorInvalidBalance as e:
-                self.log_error(str(e))
-            except Exception as e:
-                self.log_error(f"Erro não tratado: {str(e)}")
+          
 
         if not winner:
             winner = min(self.activePlayers, key=lambda player: len(player.cartas_mao))
@@ -139,31 +136,25 @@ class Uno:
 
     def play_turn(self, player, current_card):
         carta_mesa = current_card
+        
+        self.carta_mesa_atual(carta_mesa)
+        jogou = False
+        carta_um = player.fazerJogada(carta_mesa)
+
+        if carta_um is not carta_mesa:
+            jogou = True
+            return carta_um
         try:
-            self.carta_mesa_atual(carta_mesa)
-            jogou = False
-            carta_um = player.fazerJogada(carta_mesa)
-
-            if carta_um is not carta_mesa:
-                jogou = True
-                return carta_um
-
             if not jogou:
-                
+               
                 carta_comprada = self.deck.dar_carta()
                 player.cartas_mao.append(carta_comprada)
                 if carta_comprada in self.deck.cards:
                     self.deck.cards.remove(carta_comprada)
                 else:
                     raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
-        except ErrorExitCondition as e:
+        except ErrorEmptyDeck as e:
             self.log_error(str(e))
-
-        except ErrorInvalidBalance as e:
-            self.log_error(str(e))
-
-        except Exception as e:
-            self.log_error(f"Erro não tratado: {str(e)}")
 
         return carta_mesa
 
@@ -190,4 +181,4 @@ class Uno:
             file.write(f"Cartas de {player.nome}:\n")
             for i, card in enumerate(player.cartas_mao):
                 file.write(f"{i}: {card['valor']} de {card['naipe']}\n")
-                print(f"{i}: {card['valor']} de {card['naipe']}")
+                #print(f"{i}: {card['valor']} de {card['naipe']}")
