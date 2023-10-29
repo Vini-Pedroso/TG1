@@ -28,6 +28,11 @@ class ErrorEmptyDeck(Exception):
         self.msg = msg
         super().__init__(self.msg)
 
+class ErrorDeck(Exception):
+    def __init__(self, msg="Número de decks excede o maximo (maior que 6)"):
+        self.msg = msg
+        super().__init__(self.msg)
+
 class Uno:
     def __init__(self, arquivo,num_players, num_decks, seed, rounds, game_number):
         self.arquivo = arquivo
@@ -42,11 +47,12 @@ class Uno:
         self.output_filename = f'saidas/jogo_{game_number}.saida'
         self.log_filename = f'saidas/jogo_{game_number}.log'
         self.init_output_file()
+        try:
+            if isinstance(num_decks, int) and num_decks < 6:
+                self.num_decks = num_decks
+        except ErrorDeck as e:
+            self.log_error(str(e))        
 
-        if isinstance(num_decks, int) and num_decks > 0:
-            self.num_decks = num_decks
-        else:
-            raise ValueError("Número de baralhos inválido")
 
         self.deck = Deck(num_decks, seed)
         self.deck.load_from_file("baralho.txt")
@@ -147,7 +153,8 @@ class Uno:
                 if carta_comprada in self.deck.cards:
                     self.deck.cards.remove(carta_comprada)
                 else:
-                    raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
+                    if not self.deck.cards:
+                        raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
         except ErrorEmptyDeck as e:
             self.log_error(str(e))
 
