@@ -82,7 +82,6 @@ class Uno:
             _ , game_number = arquivo.split("_")
             game_number,_ = game_number.split(".")
             for player_info in players_info:
-                print(player_info)
                 nome, cpf = player_info.strip().split("--")
                 jogador = JogadorUno( nome, cpf, 0, game_number)
                 players.append(jogador) 
@@ -98,7 +97,6 @@ class Uno:
             self.seed += 1
             self.deck.embaralhar(self.seed)
             try:
-                print(self.activePlayers)
                 for player in self.activePlayers:
                     self.display_current_card()
                     self.display_player_hand(player)
@@ -131,13 +129,10 @@ class Uno:
         with open(self.output_filename, 'a+') as file:
             file.write(f"Carta atual: {self.current_card['valor']} de {self.current_card['naipe']}\n")
         
-    def carta_mesa_atual(self, card):
-        print(f"Carta atual na mesa: {card['valor']} de {card['naipe']}")
 
     def play_turn(self, player, current_card):
         carta_mesa = current_card
         
-        self.carta_mesa_atual(carta_mesa)
         jogou = False
         carta_um = player.fazerJogada(carta_mesa)
 

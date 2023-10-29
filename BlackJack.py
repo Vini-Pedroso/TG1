@@ -4,7 +4,6 @@ class ErrorEmptyDeck(Exception):
     def __init__(self, msg="Baralho vazio"):
         self.msg = msg
         super().__init__(self.msg)
-import warnings 
 class ErrorSeed(Exception):
     def __init__(self, msg):
         self.msg = msg
@@ -135,8 +134,7 @@ def inicia_BlackJack_jogo(arquivo):
             if NumeroBaralhos <=0:
                 with open(f"saidas/jogo_{numArquivo}.log", 'a+') as file:
                     file.write(f"\nAtencao: Numero de baralhos é 0\n Setando numero de baralhos para o padrao (1)\n")
-                warnings.warn("Atencao: Numero de baralhos é 0\n Setando numero de baralhos para o padrao (1)\n")
-                    #joga warning que nao tem baralho
+                #joga warning que nao tem baralho
             for line in lines:
                 line = line.split("--")
                 nome,cpf,saldo,condParada = str(line[0]) , str(line[1]), int(line[2]), int(line[3]) #cast 

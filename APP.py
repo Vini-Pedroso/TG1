@@ -2,6 +2,7 @@ from JogadorUno import JogadorUno
 from Uno import Uno
 import os
 import BlackJack
+import sys
 class ErrorLine(Exception):
     def __init__(self, msg):
         self.msg = msg
@@ -11,24 +12,28 @@ class ErrorJogo(Exception):
         self.msg = msg
         super().__init__(self.msg)
 
-def main(): 
-    for game_number in range(1, 11):
-        arquivo = f"entradas/jogo_{game_number}.txt"
-        if os.path.exists(arquivo):
-            with open(arquivo, "r") as file:
-                game_info = file.readline().strip().split("--")
-                game_name = game_info[0]
-            try:
-                if game_name == "Blackjack":
-                    game = load_and_play_Blackjack_game(arquivo)
-                elif game_name == "Uno":
-                    game = load_and_play_uno_game(arquivo)                
-                    game.start_game()
-                            
-            except Exception as e:
-                print(f"Erro ao iniciar o jogo {game_number}: {str(e)}")
-        else:
-            print(f"Arquivo {arquivo} não encontrado.")
+def main():
+    if len(sys.argv) > 1:
+        game_path = sys.argv[1].strip().lower() #consulta a internet para fazer o codigo rodar com input direto
+    else:
+        print("Exemplo de entrada: jogo_1.txt")
+        game_path= str(input(f"Digite o nome do arquivo que você deseja executar: ") ).strip().lower()
+    arquivo = f"entradas/{game_path}"
+    if os.path.exists(arquivo):
+        with open(arquivo, "r") as file:
+            game_info = file.readline().strip().split("--")
+            game_name = game_info[0]
+        try:
+            if game_name == "Blackjack":
+                game = load_and_play_Blackjack_game(arquivo)
+            elif game_name == "Uno":
+                game = load_and_play_uno_game(arquivo)                
+                game.start_game()
+                        
+        except Exception as e:
+            print(f"Erro ao iniciar o jogo {game_path}: {str(e)}")
+    else:
+        print(f"Arquivo {arquivo} não encontrado.")
 
 def get_winner_from_output(output_filename):
     winner = None
