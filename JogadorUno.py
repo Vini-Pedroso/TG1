@@ -77,7 +77,6 @@ class JogadorUno(Jogador):
         else:
             # O jogador não tem jogadas válidas, então ele compra uma carta
             carta_comprada = self.comprar_carta(carta_mesa)
-            print(f"{self.nome} comprou uma carta: {carta_comprada['valor']} de {carta_comprada['naipe']}")
             if not self.cartas_mao:
                 print(f"{self.nome} ganhou o jogo")
             return carta_mesa
