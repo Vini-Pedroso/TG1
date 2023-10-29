@@ -15,14 +15,10 @@ Este é um sistema de jogos de cartas em Python que oferece a funcionalidade de 
 
 2. Navegue até o diretório raiz do projeto.
 
-3. Execute o aplicativo Blackjack com o seguinte comando:
+3. Execute o aplicativo com o seguinte comando:
 
    ```bash
-   python blackjack.py jogo_1.txt
-
-Execute o aplicativo Uno com o seguinte comando:
-
-python uno.py jogo_2.txt
+   python APP.py jogo_1.txt
 
 
 Agora você está pronto para jogar Blackjack e Uno no sistema de jogos de cartas!
