@@ -71,7 +71,7 @@ class Uno:
                     player.cartas_mao.append(carta)
                     player.deck = self.deck
                 else:
-                    raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
+                    raise ErrorEmptyDeck("initiBaralho vazio - Encerrando jogo atual")
                     
 
     def load_players(self, arquivo):
@@ -109,7 +109,8 @@ class Uno:
                     self.current_card = self.play_turn(player, self.current_card)
                 if winner:
                     self.report_winner(winner)
-            
+                    break 
+                
             except ErrorNone as e:
                 self.log_error(str(e))
           
@@ -122,11 +123,6 @@ class Uno:
     def report_winner(self, player):
         with open(self.output_filename, "a+") as file:
             file.write(f"Vencedor: Jogador: {player.nome} CPF: {player.cpf} Número cartas: {len(player.cartas_mao)}\n")
-
-    def report_draw(self):
-        with open(self.output_filename, 'a+') as file:
-            file.write("Empate! Nenhum jogador possui mais cartas.\n")
-
 
     def display_current_card(self):
         with open(self.output_filename, 'a+') as file:
@@ -149,9 +145,9 @@ class Uno:
             if carta_comprada in self.deck.cards:
                 self.deck.cards.remove(carta_comprada)
             if not self.cards:
-                self.log_error("Baralho vazio - Encerrando jogo atual")
-                raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
-
+                self.log_error("playturnBaralho vazio - Encerrando jogo atual")
+                self.report_winner(player)
+        
         return carta_mesa
 
     def init_output_file(self):
@@ -166,7 +162,7 @@ class Uno:
         return winner
 
     def is_winner(self, player):
-        len(player.cartas_mao) == 0
+        return len(player.cartas_mao) == 0
 
     def report_round_start(self, round_number):
         with open(self.output_filename, 'a+') as file:
