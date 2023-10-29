@@ -70,8 +70,6 @@ class JogadorUno(Jogador):
         if len(jogadas_validas) > 0:
             carta = jogadas_validas[0]
             self.cartas_mao.remove(carta)
-            if not self.cartas_mao:
-                print(f"{self.nome} ganhou o jogo")
             return carta
 
         else:
@@ -86,6 +84,9 @@ class JogadorUno(Jogador):
         meu_deck = Deck(seed=101) 
         meu_deck.load_from_file("baralho.txt")  
         nova_carta = meu_deck.dar_carta()
+        if nova_carta == None:
+            self.log_error("O Baralho está vaziokkk")
+            
         self.cartas_mao.append(nova_carta)
         return nova_carta
 

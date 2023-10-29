@@ -28,11 +28,6 @@ class ErrorEmptyDeck(Exception):
         self.msg = msg
         super().__init__(self.msg)
 
-class ErrorDeck(Exception):
-    def __init__(self, msg="Número de decks excede o maximo (maior que 6)"):
-        self.msg = msg
-        super().__init__(self.msg)
-
 class Uno:
     def __init__(self, arquivo,num_players, num_decks, seed, rounds, game_number):
         self.arquivo = arquivo
@@ -47,12 +42,14 @@ class Uno:
         self.output_filename = f'saidas/jogo_{game_number}.saida'
         self.log_filename = f'saidas/jogo_{game_number}.log'
         self.init_output_file()
-        try:
-            if isinstance(num_decks, int) and num_decks < 6:
-                self.num_decks = num_decks
-        except ErrorDeck as e:
-            self.log_error(str(e))        
 
+        if isinstance(num_decks, int) and num_decks > 0:
+            self.num_decks = num_decks
+        else:
+            raise ValueError("Número de baralhos inválido")
+        if num_decks > 6:
+            with open(self.log_filename, "a+")as file:
+                file.write("Erro: número de baralhos excede o máximo(6)" )
 
         self.deck = Deck(num_decks, seed)
         self.deck.load_from_file("baralho.txt")
@@ -145,18 +142,15 @@ class Uno:
         if carta_um is not carta_mesa:
             jogou = True
             return carta_um
-        try:
-            if not jogou:
-               
-                carta_comprada = self.deck.dar_carta()
-                player.cartas_mao.append(carta_comprada)
-                if carta_comprada in self.deck.cards:
-                    self.deck.cards.remove(carta_comprada)
-                else:
-                    if not self.deck.cards:
-                        raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
-        except ErrorEmptyDeck as e:
-            self.log_error(str(e))
+    
+        if not jogou:
+            carta_comprada = self.deck.dar_carta()
+            player.cartas_mao.append(carta_comprada)
+            if carta_comprada in self.deck.cards:
+                self.deck.cards.remove(carta_comprada)
+            if not self.cards:
+                self.log_error("Baralho vazio - Encerrando jogo atual")
+                raise ErrorEmptyDeck("Baralho vazio - Encerrando jogo atual")
 
         return carta_mesa
 
@@ -183,4 +177,3 @@ class Uno:
             file.write(f"Cartas de {player.nome}:\n")
             for i, card in enumerate(player.cartas_mao):
                 file.write(f"{i}: {card['valor']} de {card['naipe']}\n")
-                #print(f"{i}: {card['valor']} de {card['naipe']}")
